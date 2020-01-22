@@ -13,25 +13,30 @@ class Classroom(Model):
 		self.agents = []
 		self.schedules = ['Human']
 		self.schedule_Human = SimultaneousActivation(self)
-
+		self.exits = []
 		with open('floorplans/' + floorplan) as f:
-			floorplan = np.matrix([line.strip().split() for line in f.readlines()])
+			self.floorplan = np.matrix([line.strip().split() for line in f.readlines()])
 
-		size = floorplan.shape
+		size = self.floorplan.shape
 
 		self.grid = MultiGrid(size[0], size[1], torus=False)
 
+
 		for i in range(size[0]):
 			for j in range(size[1]):
-				value = str(floorplan[i,j])
+				value = str(self.floorplan[i,j])
+				self.floorplan[i,j] = False
 				if value == 'W':
 					self.new_agent(Wall, (i,j))
+					self.floorplan[i,j] = True
 
 				elif value == 'F':
+					self.floorplan[i,j] = True
 					self.new_agent(Furniture, (i,j))
 					self.new_agent(Human, (i,j))
 
 				elif value == 'E':
+					self.exits.append((i,j)) 
 					self.new_agent(Exit, (i,j))
 
 	def new_agent(self, agent_type, pos):

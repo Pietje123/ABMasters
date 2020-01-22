@@ -29,7 +29,7 @@ class Human(Objects):
 		neighbourhood = self.model.grid.get_neighborhood(self.pos,
 													moore=False)
 		self.new_pos = random.choice(neighbourhood)
-
+		
 	def step(self):
 		self.move() 
 

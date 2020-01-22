@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 
 class Node:
     def __init__(self, x, y, open):
@@ -13,8 +14,9 @@ class Node:
 
 
 def Dijkstra(grid):
+    width, heigth = grid.shape
     stack = [grid[0][9]]
-
+    grid = copy.deepcopy(grid)
     while True:
         heap = stack
         stack = []
