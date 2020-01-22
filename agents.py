@@ -2,6 +2,17 @@ from mesa import Agent
 import random
 import dijkstra
 
+class Node:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.done = False
+        self.exit = False
+        self.path = []
+
+    def __str__(self):
+        return f"{(self.x, self.y)}"
+
 class Objects(Agent):
 	def __init__(self, model, pos):
 		super().__init__(model.next_id(), model)
@@ -36,6 +47,9 @@ class Human(Objects):
 		
 	def step(self):
 		self.move() 
+
+	def saved(self):
+		model.remove_agent(self)
 
 	def advance(self):
 		self.model.grid.move_agent(self, self.new_pos)

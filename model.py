@@ -5,7 +5,6 @@ import os
 import numpy as np
 from agents import *
 
-
 class Classroom(Model):
 	def __init__(self, floorplan):
 		super().__init__()
@@ -14,35 +13,34 @@ class Classroom(Model):
 		self.schedules = ['Human']
 		self.schedule_Human = SimultaneousActivation(self)
 		self.exits = []
+		self.floorplan = []
 		with open('floorplans/' + floorplan) as f:
-			self.floorplan = np.matrix([line.strip().split() for line in f.readlines()])
+			[self.floorplan.append(line.strip().split()) for line in f.readlines()]
 
-		size = self.floorplan.shape
-
+		size = len(self.floorplan) , len(self.floorplan[0])
 		self.grid = MultiGrid(size[0], size[1], torus=False)
-
 
 		for i in range(size[0]):
 			for j in range(size[1]):
-				value = str(self.floorplan[i,j])
-				self.floorplan[i,j] = False
+				value = str(self.floorplan[i][j])
+				self.floorplan[i][j] = Node(i,j)
 				if value == 'W':
 					self.new_agent(Wall, (i,j))
-					self.floorplan[i,j] = True
+					self.floorplan[i][j].done = True
 
 				elif value == 'F':
-					self.floorplan[i,j] = True
+					self.floorplan[i][j].done = True
 					self.new_agent(Furniture, (i,j))
 
 				elif value == 'S':
 					self.new_agent(Human, (i,j))
 
 				elif value == 'E':
-					self.exits.append((i,j)) 
+					self.floorplan[i][j].exit = True
 					self.new_agent(Exit, (i,j))
-		for human in self.agents:
-			if type(human) is Human:
-				human.dijkstra()
+		# for human in self.agents:
+		# 	if type(human) is Human:
+		# 		human.dijkstra()
 
 
 	def new_agent(self, agent_type, pos):
@@ -73,7 +71,6 @@ class Classroom(Model):
 
 tester = Classroom('floorplan_c0_110.txt')
 # tester.run_model()
-print(tester.exits)
 # # Create a RandomWalker, so that we can call the random_move() method
 # start_position = (5, 5)
 # tester.new_agent(RandomWalker, start_position)
