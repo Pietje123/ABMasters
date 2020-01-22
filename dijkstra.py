@@ -4,7 +4,6 @@ class Node:
     def __init__(self, x, y, open):
         self.x = x
         self.y = y
-        self.open = True
         self.done = False
         self.exit = False
         self.path = []
@@ -14,49 +13,49 @@ class Node:
 
 
 def Dijkstra(grid):
-    heap = [grid[0][9]]
+    stack = [grid[0][9]]
 
     while True:
-
+        heap = stack
+        stack = []
         for node in heap:
-            print(node)
             if node.exit:
                 return node.path
 
             a = node.x + 1
             b = node.x - 1
-            c = node.y + 1
-            d = node.y - 1
+            c = node.x
+            d = node.y + 1
+            e = node.y - 1
+            f = node.y
 
-            if ((a < 10 and c < 10) and (a > -1 and c > -1)):
-                if not grid[a][c].done:
-                    grid[a][c].done = True
-                    grid[a][c].path = node.path
-                    grid[a][c].path.append((node.x, node.y))
-                    heap.append(grid[a][c])
+            if a > -1 and a < 10:
+                if not grid[a][f].done:
+                    grid[a][f].done = True
+                    grid[a][f].path = node.path.copy()
+                    grid[a][f].path.append((c, f))
+                    stack.append(grid[a][f])
 
-            if ((a < 10 and d < 10) and (a > -1 and d > -1)):
-                if not grid[a][d].done:
-                    grid[a][d].done = True
-                    grid[a][d].path = node.path
-                    grid[a][d].path.append((node.x, node.y))
-                    heap.append(grid[a][d])
+            if b > -1 and b < 10:
+                if not grid[b][f].done:
+                    grid[b][f].done = True
+                    grid[b][f].path = node.path.copy()
+                    grid[b][f].path.append((c, f))
+                    stack.append(grid[b][f])
 
-            if ((b < 10 and c < 10) and (b > -1 and c > -1)):
-                if not grid[b][c].done:
-                    grid[b][c].done = True
-                    grid[b][c].path = node.path
-                    grid[b][c].path.append((node.x, node.y))
-                    heap.append(grid[b][c])
+            if d > -1 and d < 10:
+                if not grid[c][d].done:
+                    grid[c][d].done = True
+                    grid[c][d].path = node.path.copy()
+                    grid[c][d].path.append((c, f))
+                    stack.append(grid[c][d])
 
-            if ((b < 10 and d < 10) and (b > -1 and d > -1)):
-                if not grid[b][d].done:
-                    grid[b][d].done = True
-                    grid[b][d].path = node.path
-                    grid[b][d].path.append((node.x, node.y))
-                    heap.append(grid[b][d])
-
-            heap.remove(node)
+            if e > -1 and e < 10:
+                if not grid[c][e].done:
+                    grid[c][e].done = True
+                    grid[c][e].path = node.path.copy()
+                    grid[c][e].path.append((c, f))
+                    stack.append(grid[c][e])
 
 # Create Grid
 grid = []
@@ -67,8 +66,14 @@ for x in np.arange(0, 10):
     grid.append(list)
 
 # Creat Obstacles
-for i in range(6, 10):
-    grid[i][2].open = False
+for i in range(2, 10):
+    grid[i][2].done = True
+
+for i in range(1, 9):
+    grid[i][6].done = True
+
+for i in range(0, 4):
+    grid[i][8].done = True
 
 # Create Exit
 grid[9][0].exit = True
