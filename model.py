@@ -33,11 +33,17 @@ class Classroom(Model):
 				elif value == 'F':
 					self.floorplan[i,j] = True
 					self.new_agent(Furniture, (i,j))
+
+				elif value == 'S':
 					self.new_agent(Human, (i,j))
 
 				elif value == 'E':
 					self.exits.append((i,j)) 
 					self.new_agent(Exit, (i,j))
+		for human in self.agents:
+			if type(human) is Human:
+				human.dijkstra()
+
 
 	def new_agent(self, agent_type, pos):
 		'''
@@ -66,7 +72,8 @@ class Classroom(Model):
 		self.step()
 
 tester = Classroom('floorplan_c0_110.txt')
-tester.run_model()
+# tester.run_model()
+print(tester.exits)
 # # Create a RandomWalker, so that we can call the random_move() method
 # start_position = (5, 5)
 # tester.new_agent(RandomWalker, start_position)

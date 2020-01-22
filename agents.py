@@ -1,5 +1,6 @@
 from mesa import Agent
 import random
+import dijkstra
 
 class Objects(Agent):
 	def __init__(self, model, pos):
@@ -24,11 +25,14 @@ class Human(Objects):
 		super().__init__(model, pos)
 		getattr(model, f'schedule_{self.__class__.__name__}').add(self)
 		self.new_pos = 0
+		self.path = []
+
+	def dijkstra(self):
+		self.path = Dijkstra(model.floorplan, model.exits, self.pos)
 
 	def move(self):
-		neighbourhood = self.model.grid.get_neighborhood(self.pos,
-													moore=False)
-		self.new_pos = random.choice(neighbourhood)
+		self.new_pos = path[0]
+		self.path = path[1:]
 		
 	def step(self):
 		self.move() 
