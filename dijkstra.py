@@ -1,10 +1,12 @@
 import numpy as np
 import copy
 
-def Dijkstra(grid, exits, pos):
-    width, heigth = grid.shape
-    stack = [grid[0][9]]
-    grid = copy.deepcopy(grid)
+def Dijkstra(maingrid, pos):
+
+    grid = copy.deepcopy(maingrid)
+    xs, xy = pos
+    stack = [grid[xs][xy]]
+
     while True:
         heap = stack
         stack = []

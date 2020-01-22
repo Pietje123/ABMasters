@@ -48,6 +48,7 @@ class Classroom(Model):
 		Method that creates a new agent, and adds it to the correct scheduler.
 		'''
 		agent = agent_type(self, pos)
+		self.agents.append(agent)
 		self.grid.place_agent(agent, pos)
 		if agent_type.__name__ in self.schedules:
 			getattr(self, f'schedule_{agent_type.__name__}').add(agent)
@@ -58,18 +59,22 @@ class Classroom(Model):
 		'''
 		self.grid.remove_agent(agent)
 		getattr(self, f'schedule_{type(agent).__name__}').remove(agent)
-		
+
 	def step(self):
 		'''
-		Method that steps every agent. 
+		Method that steps every agent.
 		'''
 
 		self.schedule_Human.step()
-	
+
 	def run_model(self):
 		self.step()
 
 tester = Classroom('floorplan_c0_110.txt')
+print(tester.floorplan[0])
+for agent in tester.agents:
+	if type(agent) == Human:
+		agent.dijkstra()
 # tester.run_model()
 # # Create a RandomWalker, so that we can call the random_move() method
 # start_position = (5, 5)
