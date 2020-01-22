@@ -13,7 +13,7 @@ class Node:
         return f"{(self.x, self.y)}"
 
 
-def Dijkstra(grid):
+def Dijkstra(grid, exits, pos):
     width, heigth = grid.shape
     stack = [grid[0][9]]
     grid = copy.deepcopy(grid)
