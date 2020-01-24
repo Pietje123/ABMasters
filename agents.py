@@ -44,11 +44,13 @@ class Human(Objects):
         print(self.path)
 
     def move(self):
-        self.new_pos = path[0]
-        self.path = path[1:]
+        self.new_pos = self.path[0]
+        self.path = self.path[1:]
 
     def step(self):
+        self.dijkstra()
         self.move()
+        self.advance()
 
     def saved(self):
         self.model.remove_agent(self)

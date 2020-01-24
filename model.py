@@ -71,10 +71,17 @@ class Classroom(Model):
 		self.step()
 
 tester = Classroom('floorplan_c0_110.txt')
-print(tester.floorplan[0])
+humans = []
 for agent in tester.agents:
 	if type(agent) == Human:
-		agent.dijkstra()
+		humans.append(agent)
+
+testagent = humans[0]
+print(testagent.pos)
+for i in range(5):
+	testagent.step()
+	print(testagent.pos)
+
 # tester.run_model()
 # # Create a RandomWalker, so that we can call the random_move() method
 # start_position = (5, 5)

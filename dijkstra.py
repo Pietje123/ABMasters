@@ -4,6 +4,7 @@ import copy
 def Dijkstra(maingrid, pos):
 
     grid = copy.deepcopy(maingrid)
+    xmax, ymax = len(grid[0]), len(grid)
     xs, xy = pos
     stack = [grid[xs][xy]]
 
@@ -12,7 +13,8 @@ def Dijkstra(maingrid, pos):
         stack = []
         for node in heap:
             if node.exit:
-                return node.path
+                node.path.append((node.x, node.y))
+                return node.path[1:]
 
             a = node.x + 1
             b = node.x - 1
@@ -21,28 +23,28 @@ def Dijkstra(maingrid, pos):
             e = node.y - 1
             f = node.y
 
-            if a > -1 and a < 10:
+            if a > -1 and a < xmax:
                 if not grid[a][f].done:
                     grid[a][f].done = True
                     grid[a][f].path = node.path.copy()
                     grid[a][f].path.append((c, f))
                     stack.append(grid[a][f])
 
-            if b > -1 and b < 10:
+            if b > -1 and b < xmax:
                 if not grid[b][f].done:
                     grid[b][f].done = True
                     grid[b][f].path = node.path.copy()
                     grid[b][f].path.append((c, f))
                     stack.append(grid[b][f])
 
-            if d > -1 and d < 10:
+            if d > -1 and d < ymax:
                 if not grid[c][d].done:
                     grid[c][d].done = True
                     grid[c][d].path = node.path.copy()
                     grid[c][d].path.append((c, f))
                     stack.append(grid[c][d])
 
-            if e > -1 and e < 10:
+            if e > -1 and e < ymax:
                 if not grid[c][e].done:
                     grid[c][e].done = True
                     grid[c][e].path = node.path.copy()

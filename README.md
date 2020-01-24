@@ -5,6 +5,7 @@
 - Scheduler / Step function (Dijkstra, move, agent order)
 - Human Bumping (One/Multiple per cell, heuristic in Dijkstra)
 - Switch to continuous (pathfinding)
+- Remove agents that reach exit
 
 ## Visualisation
 - discrete grid visualisation (Mesa)
