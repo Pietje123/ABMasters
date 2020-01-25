@@ -42,26 +42,23 @@ class Classroom(Model):
 					self.floorplan[i][j].exit = True
 					self.new_agent(Exit, (i,j))
 
-		# Spawn agents according to floorplan
-		for i in range(0, self.n_agents):
-			pos = random.choice(self.spawn_list)
-			if pos:
-				self.new_agent(Human, pos)
+		# Spawn n_agents according to floorplan
+		pos_list = random.sample(self.spawn_list, self.n_agents)
+		for pos in pos_list:
+			self.new_agent(Human, pos)
 
-		# Collects statistics from our model run
-		self.datacollector = DataCollector(
-			{
-				"Alive": lambda m: self.count_human_status(m, Human.Status.ALIVE),
-				"Dead": lambda m: self.count_human_status(m, Human.Status.DEAD),
-				"Escaped": lambda m: self.count_human_status(m, Human.Status.ESCAPED)
-			}
-		)
-
+#		# Collects statistics from our model run
+#		self.datacollector = DataCollector(
+#			{
+#				"Alive": lambda m: self.count_human_status(m, Human.Status.ALIVE),
+#				"Dead": lambda m: self.count_human_status(m, Human.Status.DEAD),
+#				"Escaped": lambda m: self.count_human_status(m, Human.Status.ESCAPED)
+#			}
+#		)
 
 		# for human in self.agents:
 		# 	if type(human) is Human:
 		# 		human.dijkstra()
-
 
 	def new_agent(self, agent_type, pos):
 		'''
@@ -84,7 +81,6 @@ class Classroom(Model):
 		'''
 		Method that steps every agent.
 		'''
-
 		self.schedule_Human.step()
 
 	def run_model(self):

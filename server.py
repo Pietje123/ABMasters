@@ -43,14 +43,11 @@ def fire_evacuation_portrayal(agent):
     return portrayal
 
 
-# Was hoping floorplan could dictate the size of the grid, but seems the grid needs to be specified first, so the size is fixed to 50x50
-canvas_element = CanvasGrid(fire_evacuation_portrayal, 23, 17, 800, 800)
+# Size of grid is hardcoded, if floorplan changes change grid size manually
+canvas_element = CanvasGrid(fire_evacuation_portrayal, 23, 17, 500, 500)
 
 # Define the charts on our web interface visualisation
-status_chart = ChartModule([{"Label": "Alive", "Color": "blue"},
-                            {"Label": "Escaped", "Color": "green"}])
-
-mobility_chart = ChartModule([{"Label": "Normal", "Color": "green"}])
+#status_chart = ChartModule([{"Label": "Escaped", "Color": "green"}])
 
 # Get list of available floorplans
 
@@ -65,5 +62,9 @@ model_params = {
 }
 
 # Start the visual server with the model
-server = ModularServer(Classroom, [canvas_element, status_chart, mobility_chart], "Fire Evacuation",
+server = ModularServer(Classroom, [canvas_element], "Fire Evacuation",
                        model_params)
+
+"""With status chart"""
+#server = ModularServer(Classroom, [canvas_element, status_chart], "Fire Evacuation",
+#                       model_params)
