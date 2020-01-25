@@ -4,16 +4,19 @@ from mesa.time import SimultaneousActivation
 import os
 import numpy as np
 from agents import *
+from mesa.datacollection import DataCollector
 
 class Classroom(Model):
-	def __init__(self, floorplan):
+	def __init__(self, floorplan, human_count):
 		super().__init__()
-		self.n_agents = 0
+		self.n_agents = human_count
 		self.agents = []
 		self.schedules = ['Human']
 		self.schedule_Human = SimultaneousActivation(self)
 		self.exits = []
 		self.floorplan = []
+		self.spawn_list = []
+
 		with open('floorplans/' + floorplan) as f:
 			[self.floorplan.append(line.strip().split()) for line in f.readlines()]
 
@@ -33,11 +36,28 @@ class Classroom(Model):
 					self.new_agent(Furniture, (i,j))
 
 				elif value == 'S':
-					self.new_agent(Human, (i,j))
+					self.spawn_list.append((i,j))
 
 				elif value == 'E':
 					self.floorplan[i][j].exit = True
 					self.new_agent(Exit, (i,j))
+
+		# Spawn agents according to floorplan
+		for i in range(0, self.n_agents):
+			pos = random.choice(self.spawn_list)
+			if pos:
+				self.new_agent(Human, pos)
+
+		# Collects statistics from our model run
+		self.datacollector = DataCollector(
+			{
+				"Alive": lambda m: self.count_human_status(m, Human.Status.ALIVE),
+				"Dead": lambda m: self.count_human_status(m, Human.Status.DEAD),
+				"Escaped": lambda m: self.count_human_status(m, Human.Status.ESCAPED)
+			}
+		)
+
+
 		# for human in self.agents:
 		# 	if type(human) is Human:
 		# 		human.dijkstra()
@@ -70,17 +90,17 @@ class Classroom(Model):
 	def run_model(self):
 		self.step()
 
-tester = Classroom('floorplan_c0_110.txt')
-humans = []
-for agent in tester.agents:
-	if type(agent) == Human:
-		humans.append(agent)
+#tester = Classroom('floorplan_c0_110.txt')
+#humans = []
+#for agent in tester.agents:
+#	if type(agent) == Human:
+#		humans.append(agent)
 
-testagent = humans[0]
-print(testagent.pos)
-for i in range(5):
-	testagent.step()
-	print(testagent.pos)
+#testagent = humans[0]
+#print(testagent.pos)
+#for i in range(5):
+#	testagent.step()
+#	print(testagent.pos)
 
 # tester.run_model()
 # # Create a RandomWalker, so that we can call the random_move() method

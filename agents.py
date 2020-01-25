@@ -19,6 +19,8 @@ class Objects(Agent):
         self.pos = pos
         self.model = model
 
+    def get_position(self):
+        return self.pos
 
 class Furniture(Objects):
     def __init__(self, model, pos):
