@@ -4,6 +4,7 @@ from mesa.time import SimultaneousActivation
 import os
 import numpy as np
 from agents import *
+from scheduler import DistanceScheduler
 
 class Classroom(Model):
 	def __init__(self, floorplan):
@@ -11,7 +12,8 @@ class Classroom(Model):
 		self.n_agents = 0
 		self.agents = []
 		self.schedules = ['Human']
-		self.schedule_Human = SimultaneousActivation(self)
+		self.schedule_Human = DistanceScheduler()
+		# SimultaneousActivation(self)
 		self.exits = []
 		self.floorplan = []
 		with open('floorplans/' + floorplan) as f:
@@ -38,9 +40,12 @@ class Classroom(Model):
 				elif value == 'E':
 					self.floorplan[i][j].exit = True
 					self.new_agent(Exit, (i,j))
-		# for human in self.agents:
-		# 	if type(human) is Human:
-		# 		human.dijkstra()
+					self.exits.append((i, j))
+
+		for agent in self.agents:
+			agent.dijkstra()
+
+		for agent in self.agents.
 
 
 	def new_agent(self, agent_type, pos):
@@ -48,10 +53,10 @@ class Classroom(Model):
 		Method that creates a new agent, and adds it to the correct scheduler.
 		'''
 		agent = agent_type(self, pos)
-		self.agents.append(agent)
 		self.grid.place_agent(agent, pos)
 		if agent_type.__name__ in self.schedules:
 			getattr(self, f'schedule_{agent_type.__name__}').add(agent)
+			self.agents.append(agent)
 
 	def remove_agent(self, agent):
 		'''
@@ -70,17 +75,13 @@ class Classroom(Model):
 	def run_model(self):
 		self.step()
 
+print("Initialised")
 tester = Classroom('floorplan_c0_110.txt')
-humans = []
-for agent in tester.agents:
-	if type(agent) == Human:
-		humans.append(agent)
+test = tester.agents[0]
+print(test.pos)
+tester.step()
+print(test.pos)
 
-testagent = humans[0]
-print(testagent.pos)
-for i in range(5):
-	testagent.step()
-	print(testagent.pos)
 
 # tester.run_model()
 # # Create a RandomWalker, so that we can call the random_move() method

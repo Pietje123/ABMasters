@@ -1,5 +1,6 @@
 from mesa import Agent
 import random
+import numpy as np
 from dijkstra import *
 
 class Node:
@@ -38,19 +39,23 @@ class Human(Objects):
         getattr(model, f'schedule_{self.__class__.__name__}').add(self)
         self.new_pos = 0
         self.path = []
+        self.dist = None
 
     def dijkstra(self):
         self.path = Dijkstra(self.model.floorplan, self.pos)
-        print(self.path)
+
+    def distance(self):
+        self.dist = len(self.path)
 
     def move(self):
         self.new_pos = self.path[0]
         self.path = self.path[1:]
 
     def step(self):
-        self.dijkstra()
         self.move()
+        self.distance()
         self.advance()
+        self.dijkstra()
 
     def saved(self):
         self.model.remove_agent(self)

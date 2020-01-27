@@ -4,7 +4,7 @@ import copy
 def Dijkstra(maingrid, pos):
 
     grid = copy.deepcopy(maingrid)
-    xmax, ymax = len(grid[0]), len(grid)
+    ymax, xmax = len(grid[0]), len(grid)
     xs, xy = pos
     stack = [grid[xs][xy]]
 
