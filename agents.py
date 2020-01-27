@@ -60,4 +60,6 @@ class Human(Objects):
         self.model.remove_agent(self)
 
     def advance(self):
-        self.model.grid.move_agent(self, self.new_pos)
+        if (self.model.grid.is_cell_empty(self.new_pos) or
+            self.new_pos in self.model.exits):
+            self.model.grid.move_agent(self, self.new_pos)

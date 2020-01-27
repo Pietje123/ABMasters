@@ -1,5 +1,5 @@
 from mesa import Model
-from mesa.space import MultiGrid
+from mesa.space import Grid
 from mesa.time import SimultaneousActivation
 import os
 import numpy as np
@@ -23,7 +23,7 @@ class Classroom(Model):
 			[self.floorplan.append(line.strip().split()) for line in f.readlines()]
 
 		size = len(self.floorplan) , len(self.floorplan[0])
-		self.grid = MultiGrid(size[0], size[1], torus=False)
+		self.grid = Grid(size[0], size[1], torus=False)
 
 		for i in range(size[0]):
 			for j in range(size[1]):
@@ -89,13 +89,14 @@ class Classroom(Model):
 	def run_model(self):
 		self.step()
 
-# tester = Classroom('floorplan_c0_110.txt', 10)
-# for agent in tester.agents:
-# 	print(agent.pos, agent.path)
-# tester.run_model()
-# print("\n")
-# for agent in tester.agents:
-# 	print(agent.pos, agent.path)
+# tester = Classroom('floorplan_c0_110.txt', 80)
+# for i in range(10):
+# 	print("\n")
+# 	print(i)
+# 	for agent in tester.agents:
+# 		print(agent.pos)
+# 	tester.run_model()
+
 
 #testagent = humans[0]
 #print(testagent.pos)
