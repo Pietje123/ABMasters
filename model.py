@@ -4,18 +4,21 @@ from mesa.time import SimultaneousActivation
 import os
 import numpy as np
 from agents import *
+from mesa.datacollection import DataCollector
 from scheduler import DistanceScheduler
 
 class Classroom(Model):
-	def __init__(self, floorplan):
+	def __init__(self, floorplan, human_count):
 		super().__init__()
-		self.n_agents = 0
+		self.n_agents = human_count
 		self.agents = []
 		self.schedules = ['Human']
 		self.schedule_Human = DistanceScheduler()
 		# SimultaneousActivation(self)
 		self.exits = []
 		self.floorplan = []
+		self.spawn_list = []
+
 		with open('floorplans/' + floorplan) as f:
 			[self.floorplan.append(line.strip().split()) for line in f.readlines()]
 
@@ -35,18 +38,29 @@ class Classroom(Model):
 					self.new_agent(Furniture, (i,j))
 
 				elif value == 'S':
-					self.new_agent(Human, (i,j))
+					self.spawn_list.append((i,j))
 
 				elif value == 'E':
 					self.floorplan[i][j].exit = True
 					self.new_agent(Exit, (i,j))
 					self.exits.append((i, j))
+		# Spawn n_agents according to floorplan
+		pos_list = random.sample(self.spawn_list, self.n_agents)
+		for pos in pos_list:
+			self.new_agent(Human, pos)
 
-		for agent in self.agents:
-			agent.dijkstra()
+#		# Collects statistics from our model run
+#		self.datacollector = DataCollector(
+#			{
+#				"Alive": lambda m: self.count_human_status(m, Human.Status.ALIVE),
+#				"Dead": lambda m: self.count_human_status(m, Human.Status.DEAD),
+#				"Escaped": lambda m: self.count_human_status(m, Human.Status.ESCAPED)
+#			}
+#		)
 
-		for agent in self.agents.
-
+		# for human in self.agents:
+		# 	if type(human) is Human:
+		# 		human.dijkstra()
 
 	def new_agent(self, agent_type, pos):
 		'''
@@ -69,12 +83,12 @@ class Classroom(Model):
 		'''
 		Method that steps every agent.
 		'''
-
 		self.schedule_Human.step()
 
 	def run_model(self):
 		self.step()
 
+<<<<<<< HEAD
 print("Initialised")
 tester = Classroom('floorplan_c0_110.txt')
 test = tester.agents[0]
@@ -82,6 +96,19 @@ print(test.pos)
 tester.step()
 print(test.pos)
 
+=======
+#tester = Classroom('floorplan_c0_110.txt')
+#humans = []
+#for agent in tester.agents:
+#	if type(agent) == Human:
+#		humans.append(agent)
+
+#testagent = humans[0]
+#print(testagent.pos)
+#for i in range(5):
+#	testagent.step()
+#	print(testagent.pos)
+>>>>>>> 2d4bdcd070f5cfdf15aed28e85c9667b2a6a374f
 
 # tester.run_model()
 # # Create a RandomWalker, so that we can call the random_move() method
