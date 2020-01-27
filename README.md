@@ -19,10 +19,7 @@
 ## Report
 - Literature
 - Layout
-<<<<<<< HEAD
-=======
 
 TEST
 - test 2.1
 - another one
->>>>>>> 2d4bdcd070f5cfdf15aed28e85c9667b2a6a374f

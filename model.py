@@ -13,7 +13,7 @@ class Classroom(Model):
 		self.n_agents = human_count
 		self.agents = []
 		self.schedules = ['Human']
-		self.schedule_Human = DistanceScheduler()
+		self.schedule_Human = DistanceScheduler(self)
 		# SimultaneousActivation(self)
 		self.exits = []
 		self.floorplan = []
@@ -44,10 +44,11 @@ class Classroom(Model):
 					self.floorplan[i][j].exit = True
 					self.new_agent(Exit, (i,j))
 					self.exits.append((i, j))
+
 		# Spawn n_agents according to floorplan
-		pos_list = random.sample(self.spawn_list, self.n_agents)
-		for pos in pos_list:
+		for pos in random.sample(self.spawn_list, self.n_agents):
 			self.new_agent(Human, pos)
+
 
 #		# Collects statistics from our model run
 #		self.datacollector = DataCollector(
@@ -69,7 +70,7 @@ class Classroom(Model):
 		agent = agent_type(self, pos)
 		self.grid.place_agent(agent, pos)
 		if agent_type.__name__ in self.schedules:
-			getattr(self, f'schedule_{agent_type.__name__}').add(agent)
+			# getattr(self, f'schedule_{agent_type.__name__}').add(agent)
 			self.agents.append(agent)
 
 	def remove_agent(self, agent):
@@ -88,29 +89,16 @@ class Classroom(Model):
 	def run_model(self):
 		self.step()
 
-<<<<<<< HEAD
-print("Initialised")
-tester = Classroom('floorplan_c0_110.txt')
-test = tester.agents[0]
-print(test.pos)
-tester.step()
-print(test.pos)
-
-=======
-#tester = Classroom('floorplan_c0_110.txt')
-#humans = []
-#for agent in tester.agents:
-#	if type(agent) == Human:
-#		humans.append(agent)
+# tester = Classroom('floorplan_c0_110.txt', 10)
+# for agent in tester.agents:
+# 	print(agent.pos, agent.path)
+# tester.run_model()
+# print("\n")
+# for agent in tester.agents:
+# 	print(agent.pos, agent.path)
 
 #testagent = humans[0]
 #print(testagent.pos)
 #for i in range(5):
 #	testagent.step()
 #	print(testagent.pos)
->>>>>>> 2d4bdcd070f5cfdf15aed28e85c9667b2a6a374f
-
-# tester.run_model()
-# # Create a RandomWalker, so that we can call the random_move() method
-# start_position = (5, 5)
-# tester.new_agent(RandomWalker, start_position)

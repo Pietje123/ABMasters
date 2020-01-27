@@ -2,9 +2,10 @@ import numpy as np
 import random as rnd
 
 class DistanceScheduler:
-    def __init__(self):
+    def __init__(self, model):
         self.steps = 0
         self.agents = []
+        self.model = model
 
     def add(self, agent):
         self.agents.append(agent)
@@ -14,6 +15,8 @@ class DistanceScheduler:
             self.agents.remove(agent)
 
     def step(self):
-        for agent in rnd.shuffle(self.agents).sort(key=lambda x: x.dist):
-            print(agent)
+        rnd.shuffle(self.agents)
+        for agent in sorted(self.agents, key=lambda x: x.dist):
             agent.step()
+            if agent.pos in self.model.exits:
+                agent.saved()

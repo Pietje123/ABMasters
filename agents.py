@@ -40,13 +40,11 @@ class Human(Objects):
         super().__init__(model, pos)
         getattr(model, f'schedule_{self.__class__.__name__}').add(self)
         self.new_pos = 0
-        self.path = []
-        self.dist = None
+        self.path = Dijkstra(self.model.floorplan, self.pos)
+        self.dist = len(self.path)
 
     def dijkstra(self):
         self.path = Dijkstra(self.model.floorplan, self.pos)
-
-    def distance(self):
         self.dist = len(self.path)
 
     def move(self):
@@ -55,7 +53,6 @@ class Human(Objects):
 
     def step(self):
         self.move()
-        self.distance()
         self.advance()
         self.dijkstra()
 
