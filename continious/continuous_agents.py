@@ -51,9 +51,8 @@ class Human(Objects):
 
     def get_node(self):
         xs, ys = self.pos
-        xe, ye = self.path[0]
+        xe, ye = self.node
         dist = np.sqrt((xe / 3 - xs)**2 + (ye / 3 - ys)**2)
-        print(dist)
         if dist < 0.2:
             self.node = self.path[0]
 
