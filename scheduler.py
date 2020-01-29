@@ -20,3 +20,6 @@ class DistanceScheduler:
             agent.step()
             if agent.pos in self.model.exits:
                 agent.saved()
+
+    def get_agent_count(self):
+        return len(self.agents)
