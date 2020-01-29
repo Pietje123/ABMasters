@@ -9,12 +9,13 @@ from mesa.datacollection import DataCollector
 from scheduler import DistanceScheduler
 
 class Classroom(Model):
-	def __init__(self, floorplan, human_count, human_weight = 3, human_panic = 0.0):
+	def __init__(self, human_count, human_weight=3, human_panic=0.0, floorplan='0'):
 		super().__init__()
 		self.n_agents = human_count
 		self.agents = []
 		self.schedules = ['Human']
 		self.schedule_Human = DistanceScheduler(self)
+		self.schedule = self.schedule_Human
 		# SimultaneousActivation(self)
 		self.exits = []
 		self.floorplan = []
@@ -87,7 +88,8 @@ class Classroom(Model):
 		'''
 		self.datacollector.collect(self)
 		self.schedule_Human.step()
-		print(len(self.agents))
+		#print(len(self.agents))
+
 	def run_model(self):
 		while self.agents:
 			self.step()
