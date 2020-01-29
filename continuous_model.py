@@ -5,7 +5,7 @@ import numpy as np
 import random as rnd
 import continuous_agents as ca
 from mesa.datacollection import DataCollector
-from scheduler import DistanceScheduler
+from continuous_scheduler import DistanceScheduler
 
 class Classroom(Model):
 	def __init__(self, floorplan, human_count):
@@ -92,18 +92,9 @@ class Classroom(Model):
 	def run_model(self):
 		self.step()
 
-tester = Classroom('floorplan_c0_110.txt', 2)
-print(f"Exits: {tester.exits[0].pos, tester.exits[1].pos}")
-test = tester.humans[0]
-test.dijkstra()
-print(test.pos, test.node, test.path)
-test.step()
-print(test.pos, test.node, test.path)
-test.step()
-print(test.pos, test.node, test.path)
-test.step()
-print(test.pos, test.node, test.path)
-test.step()
-print(test.pos, test.node, test.path)
-test.step()
-print(test.pos, test.node, test.path)
+# tester = Classroom('floorplan_c0_110.txt', 2)
+# print(f"Exits: {tester.exits[0].pos, tester.exits[1].pos}")
+# test = tester.humans[0]
+# while True:
+# 	tester.run_model()
+# 	print(test.pos)

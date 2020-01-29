@@ -4,25 +4,37 @@ def dijkstraforce(pos, targ):
     xs, ys = pos
     xe, ye = targ
     dx, dy = (xe / 3 - xs), (ye / 3 - ys)
-    try:
-        theta = np.arctan(dy / dx)
-    except ZeroDivisionError:
-        if dy > 0:
+
+    if np.abs(dx) < 0.001 or np.abs(dy) < 0.001:
+        if dx > 0.001:
+            theta = 0
+        elif dx < -0.001:
+            theta = np.pi
+        elif dy > 0.001:
             theta = np.pi / 2
-        elif dy < 0:
-            theta = -np.pi/2
+        elif dy < -0.001:
+            theta = -np.pi / 2
+    else:
+        if dx > 0 and dy > 0:
+            theta = np.arctan(dy / dx)
+        elif dx < 0 and dy > 0:
+            theta = np.pi - np.arctan(dy / dx)
+        elif dx > 0 and dy < 0:
+            theta = -np.arctan(dy / dx)
+        elif dx < 0 and dy < 0:
+            theta = np.pi + np.arctan(dy / dx)
+
     fx, fy = 0.1 * np.cos(theta), 0.1 * np.sin(theta)
 
     return fx, fy
 
 def bodyforce(pos, humans):
     fx, fy = 0, 0
-    print(humans)
+
     for human in humans:
         if human.pos != pos:
                 xs, ys = pos
                 xe, ye = human.pos
-                print(xs, ys, xe, ye)
                 dx, dy = (xe - xs), (ye - ys)
                 dist = np.sqrt((dx)**2 + (dy)**2)
 
@@ -30,7 +42,6 @@ def bodyforce(pos, humans):
                     theta = np.arctan(dy / dx)
                     fx += -0.2 / dist * np.cos(theta)
                     fy += -0.5 / dist * np.sin(theta)
-                    print(fx, fy)
 
     return (fx, fy)
 
