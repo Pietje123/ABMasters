@@ -47,7 +47,7 @@ def fire_evacuation_portrayal(agent):
 canvas_element = CanvasGrid(fire_evacuation_portrayal, 23, 17, 500, 500)
 
 # Define the charts on our web interface visualisation
-#status_chart = ChartModule([{"Label": "Escaped", "Color": "green"}])
+status_chart = ChartModule([{"Label": "Escaped", "Color": "green"}])
 
 # Get list of available floorplans
 
@@ -62,9 +62,8 @@ model_params = {
 }
 
 # Start the visual server with the model
-server = ModularServer(Classroom, [canvas_element], "Fire Evacuation",
-                       model_params)
+#server = ModularServer(Classroom, [canvas_element], "Fire Evacuation",
+#                       model_params)
 
 """With status chart"""
-#server = ModularServer(Classroom, [canvas_element, status_chart], "Fire Evacuation",
-#                       model_params)
+server = ModularServer(Classroom, [canvas_element, status_chart], "Fire Evacuation", model_params)

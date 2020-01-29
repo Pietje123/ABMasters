@@ -50,14 +50,13 @@ class Classroom(Model):
 			self.new_agent(Human, pos)
 
 
-#		# Collects statistics from our model run
-#		self.datacollector = DataCollector(
-#			{
-#				"Alive": lambda m: self.count_human_status(m, Human.Status.ALIVE),
-#				"Dead": lambda m: self.count_human_status(m, Human.Status.DEAD),
-#				"Escaped": lambda m: self.count_human_status(m, Human.Status.ESCAPED)
-#			}
-#		)
+		# Collects statistics from our model run
+		self.datacollector = DataCollector(
+			{
+				"Inside": lambda m: self.schedule_Human.get_agent_count(),
+				"Escaped": lambda m: (self.n_agents - self.schedule_Human.get_agent_count())
+			}
+		)
 
 		# for human in self.agents:
 		# 	if type(human) is Human:
@@ -84,12 +83,15 @@ class Classroom(Model):
 		'''
 		Method that steps every agent.
 		'''
+		self.datacollector.collect(self)
 		self.schedule_Human.step()
 
 	def run_model(self):
 		self.step()
 
-# tester = Classroom('floorplan_c0_110.txt', 80)
+
+
+		# tester = Classroom('floorplan_c0_110.txt', 80)
 # for i in range(10):
 # 	print("\n")
 # 	print(i)
