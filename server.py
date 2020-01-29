@@ -47,7 +47,7 @@ def fire_evacuation_portrayal(agent):
 canvas_element = CanvasGrid(fire_evacuation_portrayal, 23, 17, 500, 500)
 
 # Define the charts on our web interface visualisation
-#status_chart = ChartModule([{"Label": "Escaped", "Color": "green"}])
+status_chart = ChartModule([{"Label": "Escaped", "Color": "green"}])
 
 # Get list of available floorplans
 
@@ -56,15 +56,14 @@ floor_plans = [f for f in listdir("floorplans")]
 # Specify the parameters changeable by the user, in the web interface
 model_params = {
     "floorplan": UserSettableParameter("choice", "Floorplan", value=floor_plans[0], choices=floor_plans),
-    "human_count": UserSettableParameter("number", "Number Of Human Agents", value=10),
+    "human_count": UserSettableParameter("number", "Number Of Human Agents", value=1),
     #"random_spawn": UserSettableParameter('checkbox', 'Spawn Agents at Random Locations', value=True),
     #"save_plots": UserSettableParameter('checkbox', 'Save plots to file', value=True)
 }
 
 # Start the visual server with the model
-server = ModularServer(Classroom, [canvas_element], "Fire Evacuation",
-                       model_params)
+#server = ModularServer(Classroom, [canvas_element], "Fire Evacuation",
+#                       model_params)
 
 """With status chart"""
-#server = ModularServer(Classroom, [canvas_element, status_chart], "Fire Evacuation",
-#                       model_params)
+server = ModularServer(Classroom, [canvas_element, status_chart], "Fire Evacuation", model_params)

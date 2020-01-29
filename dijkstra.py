@@ -5,8 +5,8 @@ def Dijkstra(maingrid, pos):
 
     grid = copy.deepcopy(maingrid)
     ymax, xmax = len(grid[0]), len(grid)
-    xs, xy = pos
-    stack = [grid[xs][xy]]
+    x, y = pos
+    stack = [grid[x][y]]
 
     while True:
         heap = stack
