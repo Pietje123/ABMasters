@@ -20,7 +20,7 @@ class Classroom(Model):
 		self.floorplan = []
 		self.spawn_list = []
 
-		with open('floorplans/' + floorplan) as f:
+		with open('../floorplans/' + floorplan) as f:
 			[self.floorplan.append(line.strip().split()) for line in f.readlines()]
 
 		size = len(self.floorplan) , len(self.floorplan[0])
@@ -31,26 +31,23 @@ class Classroom(Model):
 				value = str(self.floorplan[i][j])
 				self.floorplan[i][j] = Node(i,j)
 				if value == 'W':
-					self.new_agent(Wall, (i,j))
-					self.floorplan[i][j].weight = 1000
+					self.new_agent(Wall, (i,j), 1000)
 
 				elif value == 'F':
-					self.floorplan[i][j].weight = 1000
-					self.new_agent(Furniture, (i,j))
+					self.new_agent(Furniture, (i,j), 1000)
 
 				elif value == 'S':
 					self.spawn_list.append((i,j))
 
 				elif value == 'E':
 					self.floorplan[i][j].exit = True
-					self.new_agent(Exit, (i,j))
+					self.new_agent(Exit, (i,j), 0)
 					self.exits.append((i, j))
 
 		# Spawn n_agents according to floorplan
 		# for pos in random.sample(self.spawn_list, self.n_agents):
 		for pos in self.spawn_list:
-			self.new_agent(Human, pos)
-			self.floorplan[pos[0]][pos[1]].weight = 10
+			self.new_agent(Human, pos, 10)
 
 
 		# Collects statistics from our model run
@@ -65,11 +62,11 @@ class Classroom(Model):
 		# 	if type(human) is Human:
 		# 		human.dijkstra()
 
-	def new_agent(self, agent_type, pos):
+	def new_agent(self, agent_type, pos, weight):
 		'''
 		Method that creates a new agent, and adds it to the correct scheduler.
 		'''
-		agent = agent_type(self, pos)
+		agent = agent_type(self, pos, weight)
 		self.grid.place_agent(agent, pos)
 		if agent_type.__name__ in self.schedules:
 			# getattr(self, f'schedule_{agent_type.__name__}').add(agent)
@@ -82,6 +79,7 @@ class Classroom(Model):
 		self.grid.remove_agent(agent)
 		self.agents.remove(agent)
 		getattr(self, f'schedule_{type(agent).__name__}').remove(agent)
+
 
 	def step(self):
 		'''
