@@ -1,7 +1,7 @@
 from mesa import Agent
 import random
 import numpy as np
-from dijkstra2 import *
+from dijkstra_weigths import *
 
 class Node:
     def __init__(self, x, y):

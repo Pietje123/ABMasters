@@ -51,7 +51,7 @@ status_chart = ChartModule([{"Label": "Escaped", "Color": "green"}])
 
 # Get list of available floorplans
 
-floor_plans = [f for f in listdir("floorplans")]
+floor_plans = [f for f in listdir("../floorplans")]
 
 # Specify the parameters changeable by the user, in the web interface
 model_params = {

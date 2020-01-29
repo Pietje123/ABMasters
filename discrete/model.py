@@ -20,7 +20,7 @@ class Classroom(Model):
 		self.floorplan = []
 		self.spawn_list = []
 
-		with open('floorplans/' + floorplan) as f:
+		with open('../floorplans/' + floorplan) as f:
 			[self.floorplan.append(line.strip().split()) for line in f.readlines()]
 
 		size = len(self.floorplan) , len(self.floorplan[0])
