@@ -1,5 +1,6 @@
 from mesa import Model
-from mesa.space import Grid
+# from mesa.space import Grid
+from trial_grid import *
 from mesa.time import SimultaneousActivation
 import os
 import numpy as np
@@ -23,7 +24,7 @@ class Classroom(Model):
 			[self.floorplan.append(line.strip().split()) for line in f.readlines()]
 
 		size = len(self.floorplan) , len(self.floorplan[0])
-		self.grid = Grid(size[0], size[1], torus=False)
+		self.grid = trial_grid(size[0], size[1], torus=False)
 
 		for i in range(size[0]):
 			for j in range(size[1]):
@@ -31,10 +32,10 @@ class Classroom(Model):
 				self.floorplan[i][j] = Node(i,j)
 				if value == 'W':
 					self.new_agent(Wall, (i,j))
-					self.floorplan[i][j].done = True
+					self.floorplan[i][j].weight = 1000
 
 				elif value == 'F':
-					self.floorplan[i][j].done = True
+					self.floorplan[i][j].weight = 1000
 					self.new_agent(Furniture, (i,j))
 
 				elif value == 'S':
@@ -46,8 +47,10 @@ class Classroom(Model):
 					self.exits.append((i, j))
 
 		# Spawn n_agents according to floorplan
-		for pos in random.sample(self.spawn_list, self.n_agents):
+		# for pos in random.sample(self.spawn_list, self.n_agents):
+		for pos in self.spawn_list:
 			self.new_agent(Human, pos)
+			self.floorplan[pos[0]][pos[1]].weight = 10
 
 
 #		# Collects statistics from our model run
@@ -78,6 +81,7 @@ class Classroom(Model):
 		Method that removes an agent from the grid and the correct scheduler.
 		'''
 		self.grid.remove_agent(agent)
+		self.agents.remove(agent)
 		getattr(self, f'schedule_{type(agent).__name__}').remove(agent)
 
 	def step(self):

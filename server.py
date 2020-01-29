@@ -56,7 +56,7 @@ floor_plans = [f for f in listdir("floorplans")]
 # Specify the parameters changeable by the user, in the web interface
 model_params = {
     "floorplan": UserSettableParameter("choice", "Floorplan", value=floor_plans[0], choices=floor_plans),
-    "human_count": UserSettableParameter("number", "Number Of Human Agents", value=10),
+    "human_count": UserSettableParameter("number", "Number Of Human Agents", value=1),
     #"random_spawn": UserSettableParameter('checkbox', 'Spawn Agents at Random Locations', value=True),
     #"save_plots": UserSettableParameter('checkbox', 'Save plots to file', value=True)
 }
