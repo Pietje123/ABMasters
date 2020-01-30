@@ -15,12 +15,12 @@ floor_plans = [f for f in listdir("../floorplans")]
 
 variables = {'num_vars': 3,
              'names': ['human_count', 'human_weight', 'human_panic'],
-             'bounds': [[2, 20], [1, 3], [0, 0.7]]}
+             'bounds': [[10, 40], [1, 3], [0, 0.7]]}
 
 # Set the repetitions, the amount of steps, and the amount of distinct values per variable
-replicates = 2
-max_steps = 10
-distinct_samples = 2
+replicates = 10
+max_steps = 30
+distinct_samples = 5
 
 # We get all our samples here
 param_values = saltelli.sample(variables, distinct_samples)
