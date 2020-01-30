@@ -4,8 +4,9 @@ import copy
 def dijkstra(maingrid, pos):
 
     grid = copy.deepcopy(maingrid)
-    ymax, xmax = len(grid[0]), len(grid)
+    xmax, ymax = len(grid[0]), len(grid)
     xs, ys = pos[0], pos[1]
+    grid[ys][xs].done = True
     stack = [grid[ys][xs]]
 
     while True:

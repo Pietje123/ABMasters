@@ -53,7 +53,7 @@ class Human(Objects):
         xs, ys = self.pos
         xe, ye = self.node
         dist = np.sqrt((xe / 3 - xs)**2 + (ye / 3 - ys)**2)
-        if dist < 0.2:
+        if dist < 0.2 and len(self.path) != 0:
             self.node = self.path[0]
 
     def move(self):

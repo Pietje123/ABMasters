@@ -7,6 +7,8 @@ import continuous_agents as ca
 from mesa.datacollection import DataCollector
 from continuous_scheduler import DistanceScheduler
 
+import matplotlib.pyplot as plt
+
 class Classroom(Model):
 	def __init__(self, floorplan, human_count):
 		super().__init__()
@@ -92,9 +94,35 @@ class Classroom(Model):
 	def run_model(self):
 		self.step()
 
-# tester = Classroom('floorplan_c0_110.txt', 2)
+# tester = Classroom('floorplan_c0_110.txt', 80)
 # print(f"Exits: {tester.exits[0].pos, tester.exits[1].pos}")
-# test = tester.humans[0]
-# while True:
-# 	tester.run_model()
-# 	print(test.pos)
+#
+#
+# positions = []
+# exits = []
+#
+# for row in tester.grid:
+# 	for node in row:
+# 		if node.done:
+# 			positions.append(node.pos)
+# 		if node.exit:
+# 			exits.append(node.pos)
+#
+# xdata = []
+# ydata = []
+# xexit = []
+# yexit = []
+#
+# for pos in positions:
+# 	xdata.append(pos[0])
+# 	ydata.append(pos[1])
+#
+# for pos in exits:
+# 	xexit.append(pos[0])
+# 	yexit.append(pos[1])
+#
+# plt.scatter(xdata, ydata)
+# plt.scatter(xexit, yexit, c='g')
+# plt.show()
+#
+# tester.run_model()
