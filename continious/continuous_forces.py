@@ -33,22 +33,23 @@ def bodyforce(pos, humans):
 
     for human in humans:
         if human.pos != pos:
-                xs, ys = pos
-                xe, ye = human.pos
-                dx, dy = (xe - xs), (ye - ys)
-                dist = np.sqrt((dx)**2 + (dy)**2)
+            print(np.where(humans == human))
+            xs, ys = pos
+            xe, ye = human.pos
+            dx, dy = (xe - xs), (ye - ys)
+            dist = np.sqrt((dx)**2 + (dy)**2)
 
-                if dist < 1:
-                    theta = np.arctan(dy / dx)
-                    fx += -0.2 / dist * np.cos(theta)
-                    fy += -0.5 / dist * np.sin(theta)
+            if dist < 1:
+                theta = np.arctan(dy / dx)
+                fx += -0.2 / dist * np.cos(theta)
+                fy += -0.5 / dist * np.sin(theta)
 
     return (fx, fy)
 
 def totalforce(pos, target, humans):
 
     dijkstra_x, dijkstra_y = dijkstraforce(pos, target)
-    body_x, body_y = bodyforce(pos, humans)
+    body_x, body_y = 0, 0
     total_x, total_y = dijkstra_x + body_x, dijkstra_y + body_y
 
     return pos[0] + total_x, pos[1] + total_y
