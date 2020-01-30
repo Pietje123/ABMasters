@@ -54,7 +54,7 @@ for i in range(replicates):
         print(f'{count / (len(param_values) * replicates) * 100:.2f}% done')
 
 data = batch.get_model_vars_dataframe()
-print(data)
+data.to_csv('data_sensitivity_analysis.csv')
 
 escape = sobol.analyze(variables, data['Escaped'].as_matrix(), print_to_console=True)
 
@@ -91,14 +91,24 @@ def plot_index(s, params, i, title=''):
     plt.errorbar(indices, range(l), xerr=errors, linestyle='None', marker='o')
     plt.axvline(0, c='k')
 
+"""Plot and save figures"""
 # First order
 plot_index(escape, variables['names'], '1', 'First order sensitivity')
+plt.savefig('First_order_sensitivity.png', bbox_inches='tight')
 plt.show()
 
 # Second order
 plot_index(escape, variables['names'], '2', 'Second order sensitivity')
+plt.savefig('Second_order_sensitivity.png', bbox_inches='tight')
 plt.show()
 
 # Total order
 plot_index(escape, variables['names'], 'T', 'Total order sensitivity')
+plt.savefig('Total_order_sensitivity.png', bbox_inches='tight')
 plt.show()
+
+""""Add initialization values and save data to csv file"""
+
+df_init = pd.DataFrame([[replicates, max_steps, distinct_samples]], columns=['Replicates', 'Max_values', 'Distinct_samples'])
+df_init.to_csv('init_params.csv')
+
