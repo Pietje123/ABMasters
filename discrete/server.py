@@ -57,13 +57,9 @@ floor_plans = [f for f in listdir("../floorplans")]
 model_params = {
     "floorplan": UserSettableParameter("choice", "Floorplan", value=floor_plans[0], choices=floor_plans),
     "human_count": UserSettableParameter("slider", "Number Of Human Agents", 10, 1, 80),
-    #"random_spawn": UserSettableParameter('checkbox', 'Spawn Agents at Random Locations', value=True),
-    #"save_plots": UserSettableParameter('checkbox', 'Save plots to file', value=True)
+    "human_panic": UserSettableParameter("slider", "Panic", 0, 0, 7),
+    "human_speed": UserSettableParameter("slider", "Maximum speed", 3, 1, 5),
 }
-
-# Start the visual server with the model
-#server = ModularServer(Classroom, [canvas_element], "Fire Evacuation",
-#                       model_params)
 
 """With status chart"""
 server = ModularServer(Classroom, [canvas_element, status_chart], "Fire Evacuation", model_params)

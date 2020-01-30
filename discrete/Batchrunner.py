@@ -13,14 +13,14 @@ from itertools import combinations
 
 floor_plans = [f for f in listdir("../floorplans")]
 
-variables = {'num_vars': 3,
-             'names': ['human_count', 'human_weight', 'human_panic'],
-             'bounds': [[10, 40], [1, 3], [0, 0.7]]}
+variables = {'num_vars': 4,
+             'names': ['human_count', 'human_weight', 'human_panic', 'human_speed'],
+             'bounds': [[10, 80], [1, 3], [0, 0.7], [1, 3]]}
 
 # Set the repetitions, the amount of steps, and the amount of distinct values per variable
-replicates = 10
+replicates = 1
 max_steps = 1000
-distinct_samples = 5
+distinct_samples = 1
 
 # We get all our samples here
 param_values = saltelli.sample(variables, distinct_samples)
