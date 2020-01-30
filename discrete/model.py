@@ -9,12 +9,13 @@ from mesa.datacollection import DataCollector
 from scheduler import DistanceScheduler
 
 class Classroom(Model):
-	def __init__(self, floorplan, human_count):
+	def __init__(self, human_count, human_weight=3, human_panic=0.0, floorplan='0'):
 		super().__init__()
 		self.n_agents = human_count
 		self.agents = []
 		self.schedules = ['Human']
 		self.schedule_Human = DistanceScheduler(self)
+		self.schedule = self.schedule_Human
 		# SimultaneousActivation(self)
 		self.exits = []
 		self.floorplan = []
@@ -45,9 +46,9 @@ class Classroom(Model):
 					self.exits.append((i, j))
 
 		# Spawn n_agents according to floorplan
-		# for pos in random.sample(self.spawn_list, self.n_agents):
-		for pos in self.spawn_list:
-			self.new_agent(Human, pos, 10)
+		for pos in random.sample(self.spawn_list, self.n_agents):
+		# for pos in self.spawn_list:
+			self.new_agent(Human, pos, human_weight, human_panic)
 
 
 		# Collects statistics from our model run
@@ -62,11 +63,11 @@ class Classroom(Model):
 		# 	if type(human) is Human:
 		# 		human.dijkstra()
 
-	def new_agent(self, agent_type, pos, weight):
+	def new_agent(self, agent_type, pos, weight, panic=False):
 		'''
 		Method that creates a new agent, and adds it to the correct scheduler.
 		'''
-		agent = agent_type(self, pos, weight)
+		agent = agent_type(self, pos, weight, panic) if panic else agent_type(self, pos, weight) 
 		self.grid.place_agent(agent, pos)
 		if agent_type.__name__ in self.schedules:
 			# getattr(self, f'schedule_{agent_type.__name__}').add(agent)
@@ -87,9 +88,17 @@ class Classroom(Model):
 		'''
 		self.datacollector.collect(self)
 		self.schedule_Human.step()
+		#print(len(self.agents))
 
 	def run_model(self):
-		self.step()
+		while self.agents:
+			self.step()
+
+# model = Classroom('floorplan_c0_110.txt', 10, 3, 0.0)
+# model.run_model()
+
+# data = model.datacollector.get_model_vars_dataframe()
+# data.plot()
 
 
 

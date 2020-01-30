@@ -24,6 +24,11 @@ class Objects(Agent):
         x, y = pos
         self.model.floorplan[x][y].weight = weight
 
+    def update_floorplan(self):
+        floorplan = self.model.floorplan
+        floorplan[self.pos[0]][self.pos[1]].weight =1
+        floorplan[self.new_pos[0]][self.new_pos[1]].weight = self.weight
+
     def get_position(self):
         return self.pos
 
@@ -41,13 +46,13 @@ class Exit(Objects):
         super().__init__(model, pos, weight)
 
 class Human(Objects):
-    def __init__(self, model, pos, weight):
+    def __init__(self, model, pos, weight, panic = 0):
         super().__init__(model, pos, weight)
         getattr(model, f'schedule_{self.__class__.__name__}').add(self)
         self.path = self.dijkstra()
         self.speed = 1
         self.max_speed = 3
-        self.panic = random.random() * 0
+        self.panic = random.random() * panic if panic < 1 else random.random()
 
     def dijkstra(self):
         self.path = Dijkstra(self.model.floorplan, self.pos)
@@ -74,10 +79,6 @@ class Human(Objects):
                 self.saved()
                 break
 
-    def update_floorplan(self):
-        floorplan = self.model.floorplan
-        floorplan[self.pos[0]][self.pos[1]].weight =1
-        floorplan[self.new_pos[0]][self.new_pos[1]].weight = self.weight
 
 
     def saved(self):
