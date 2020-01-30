@@ -87,6 +87,10 @@ class Classroom(Model):
 		Method that steps every agent.
 		'''
 		self.datacollector.collect(self)
+
+		if not self.agents:
+			self.running = False
+
 		self.schedule_Human.step()
 		#print(len(self.agents))
 

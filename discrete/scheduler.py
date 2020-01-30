@@ -21,3 +21,6 @@ class DistanceScheduler:
 
     def get_agent_count(self):
         return len(self.agents)
+
+    def get_steps(self):
+        return self.steps

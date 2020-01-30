@@ -19,14 +19,14 @@ variables = {'num_vars': 3,
 
 # Set the repetitions, the amount of steps, and the amount of distinct values per variable
 replicates = 10
-max_steps = 30
+max_steps = 1000
 distinct_samples = 5
 
 # We get all our samples here
 param_values = saltelli.sample(variables, distinct_samples)
 
 # Set the outputs
-model_reporters = {'Escaped': lambda m: m.schedule_Human.get_agent_count()}
+model_reporters = {'Total_steps': lambda m: m.schedule_Human.get_steps()}
 
 batch = BatchRunner(Classroom,
                     max_steps=max_steps,
@@ -56,7 +56,7 @@ for i in range(replicates):
 data = batch.get_model_vars_dataframe()
 data.to_csv('data_sensitivity_analysis.csv')
 
-escape = sobol.analyze(variables, data['Escaped'].as_matrix(), print_to_console=True)
+escape = sobol.analyze(variables, data['Total_steps'].as_matrix(), print_to_console=True)
 
 def plot_index(s, params, i, title=''):
     """
