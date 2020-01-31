@@ -1,5 +1,4 @@
 from mesa import Model
-# from mesa.space import Grid
 from trial_grid import *
 from mesa.time import SimultaneousActivation
 import os
@@ -7,6 +6,7 @@ import numpy as np
 from agents import *
 from mesa.datacollection import DataCollector
 from scheduler import DistanceScheduler
+# import matplotlib.pyplot as plt
 
 class Classroom(Model):
 	def __init__(self, floorplan, human_count, human_weight = 3, human_panic = 0.0):
@@ -92,25 +92,22 @@ class Classroom(Model):
 		while self.agents:
 			self.step()
 
-# model = Classroom('floorplan_c0_110.txt', 10, 3, 0.0)
-# model.run_model()
+# if not os.path.exists('Data/'):
+# 	os.mkdir('Data')
 
-# data = model.datacollector.get_model_vars_dataframe()
-# data.plot()
-
-
-
-		# tester = Classroom('floorplan_c0_110.txt', 80)
 # for i in range(10):
-# 	print("\n")
-# 	print(i)
-# 	for agent in tester.agents:
-# 		print(agent.pos)
-# 	tester.run_model()
-
-
-#testagent = humans[0]
-#print(testagent.pos)
-#for i in range(5):
-#	testagent.step()
-#	print(testagent.pos)
+# 	for humans in range(10, 81, 10):
+# 		for human_weight in range(1,11):
+# 			for panic in np.arange(0.1, 0.7, 0.1):
+# 				number = 0
+# 				while True:
+# 					filename = 'Data/N_' + str(humans) + '_weight_' + str(human_weight) + '_panic_' + str(panic) \
+# 								+ '_' + str(number) + '.pkl'
+# 					if os.path.exists(filename):
+# 						number+=1
+# 					else:
+# 						break 
+# 				model = Classroom('floorplan_c0_110.txt', humans, human_weight, panic)
+# 				model.run_model()
+# 				data = model.datacollector.get_model_vars_dataframe()
+# 				data.to_pickle(filename)
