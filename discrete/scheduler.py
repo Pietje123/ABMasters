@@ -17,6 +17,10 @@ class DistanceScheduler:
     def step(self):
         for agent in sorted(self.agents, key=lambda x: x.dist):
             agent.step()
+        self.steps += 1
 
     def get_agent_count(self):
         return len(self.agents)
+
+    def get_steps(self):
+        return self.steps

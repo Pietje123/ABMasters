@@ -46,12 +46,12 @@ class Exit(Objects):
         super().__init__(model, pos, weight)
 
 class Human(Objects):
-    def __init__(self, model, pos, weight, panic = 0):
+    def __init__(self, model, pos, weight, panic = 0, max_speed = 3):
         super().__init__(model, pos, weight)
         getattr(model, f'schedule_{self.__class__.__name__}').add(self)
         self.path = self.dijkstra()
         self.speed = 1
-        self.max_speed = 3
+        self.max_speed = max_speed
         self.panic = random.random() * panic if panic < 1 else random.random()
 
     def dijkstra(self):

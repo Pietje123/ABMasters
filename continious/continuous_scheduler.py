@@ -15,11 +15,18 @@ class DistanceScheduler:
             self.agents.remove(agent)
 
     def step(self):
-        rnd.shuffle(self.agents)
+        counter = 1
         for agent in self.agents:
             agent.step()
-            if agent.pos in self.model.exits:
-                agent.saved()
+            print(f"Agent {counter} of {len(self.agents)}")
+            counter += 1
+            for exit in self.model.exits:
+                x, y = exit.pos[0] * 3 + 1, exit.pos[1] * 3 + 1
+                if agent.node == (x, y):
+                    try:
+                        agent.saved()
+                    except Exception:
+                        pass
 
     def get_agent_count(self):
         return len(self.agents)
