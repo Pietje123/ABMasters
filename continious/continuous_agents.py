@@ -47,23 +47,31 @@ class Human(Objects):
         self.path = dijkstra(self.model.grid, self.node)
 
     def force(self):
-        self.new_pos = totalforce(self.pos, self.node, self.model.humans)
+        self.new_pos = totalforce(self.pos, self.path[0], self.model.humans)
+        print(f"Pos: {self.pos}, Target: {self.new_pos}")
+        print(f"Node: {self.node}, Path: {self.path}")
 
     def get_node(self):
         xs, ys = self.pos
-        xe, ye = self.node
-        dist = np.sqrt((xe / 3 - xs)**2 + (ye / 3 - ys)**2)
-        if dist < 0.2 and len(self.path) != 0:
-            self.node = self.path[0]
+        self.node = int(np.round(xs * 3)), int(np.round(ys * 3))
+        # dist = np.sqrt((xe / 3 - xs)**2 + (ye / 3 - ys)**2)
+        # if dist < 0.16666 and len(self.path) != 0:
+        #     self.node = self.path[0]
 
     def move(self):
-        self.model.space.move_agent(self, self.new_pos)
+        try:
+            self.model.space.move_agent(self, self.new_pos)
+        except:
+            pass
 
     def step(self):
-        self.dijkstra()
-        self.get_node()
-        self.force()
-        self.move()
+        try:
+            self.dijkstra()
+            self.get_node()
+            self.force()
+            self.move()
+        except Exception as e:
+            pass
 
     def saved(self):
         self.model.remove_agent(self)

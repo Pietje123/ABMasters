@@ -1,13 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+import matplotlib.animation as anim
 
 from continuous_model import Classroom
 
-room = Classroom('floorplan_c0_110.txt', 50)
 
+room = Classroom('floorplan_c0_110.txt', 80)
+Writer = anim.writers['ffmpeg']
+writer = Writer(fps=15, metadata=dict(artist='Jozsef'), bitrate=1800)
 frames = []
-for i in range(1000):
+for i in range(500):
     print(i)
     positions = []
     for human in room.humans:
@@ -41,10 +43,13 @@ def init():
 def update(frame):
     xdata, ydata = [], []
     for pos in frame:
-        xdata.append(pos[0])
-        ydata.append(pos[1])
+        try:
+            xdata.append(pos[0])
+            ydata.append(pos[1])
+        except Exception:
+            pass
     ln.set_data(xdata, ydata)
     return ln,
 
-ani = FuncAnimation(fig, update, frames, init_func=init, blit=True)
-plt.show()
+ani = anim.FuncAnimation(fig, update, frames, init_func=init, blit=True)
+ani.save(f"animation80.mp4", writer=writer)

@@ -54,9 +54,9 @@ class Classroom(Model):
 
 				elif value == 'E':
 					self.new_agent(ca.Exit, (x, y))
-					for i in range(3 * x, 3 * (x + 1)):
-						for j in range(3 * y, 3 * (y + 1)):
-							self.grid[j][i].exit = True
+					i = 3 * x + 1
+					j = 3 * y + 1
+					self.grid[j][i].exit = True
 
 		# Spawn n_agents according to floorplan
 		for pos in rnd.sample(self.spawns, self.n_agents):
@@ -83,7 +83,8 @@ class Classroom(Model):
 		'''
 		self.space.remove_agent(agent)
 		if {type(agent).__name__} == "Human":
-			getattr(self, f'scheduler').remove(agent)
+			self.scheduler.remove(agent)
+			self.humans.remove(agent)
 
 	def step(self):
 		'''
