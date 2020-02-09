@@ -1,17 +1,26 @@
 import numpy as np
 import copy
 
-def Dijkstra(maingrid, pos):
 
+
+def Dijkstra(maingrid, pos):
+    '''
+    Searches through a grid to find the shortest path
+    '''
     grid = copy.deepcopy(maingrid)
     ymax, xmax = len(grid[0]), len(grid)
     x, y = pos
     stack = [grid[x][y]]
 
+    # while exit not found
     while True:
         heap = stack
         stack = []
+
+        # for each found path
         for node in heap:
+
+            # if exit is found
             if node.exit:
                 node.path.append((node.x, node.y))
                 return node.path[1:]
@@ -23,6 +32,7 @@ def Dijkstra(maingrid, pos):
             e = node.y - 1
             f = node.y
 
+            # check the neighbours
             if a > -1 and a < xmax:
                 if not grid[a][f].done:
                     grid[a][f].done = True

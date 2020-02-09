@@ -2,6 +2,10 @@ import numpy as np
 import random as rnd
 
 class DistanceScheduler:
+    """
+    Scheduler that activates agents in order of path-to-exit distance. Closest
+    agents are activated first to maximize flow through exit.
+    """
     def __init__(self, model):
         self.steps = 0
         self.agents = []

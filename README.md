@@ -1,25 +1,14 @@
 # ABMasters
 
-## Tasks:
-### Model
-- Scheduler / Step function (Dijkstra, move, agent order)
-- Human Bumping (One/Multiple per cell, heuristic in Dijkstra)
-- Switch to continuous (pathfinding)
-- Remove agents that reach exit
+## Content:
 
-## Visualisation
-- discrete grid visualisation (Mesa)
-- continuous grid visualisation (Mesa/?)
-- GUI parameter control
+Fire evacuation model. The visualization uses a discrete model, but the git also containts the start of a continious model.
 
-## Presentation
-- Experiments
-- Layout
+## How to run visualization:
 
-## Report
-- Literature
-- Layout
+Clone this git
 
-TEST
-- test 2.1
-- another one
+Open terminal in the cloned directory 
+
+Type `python run.py` and hit enter
+

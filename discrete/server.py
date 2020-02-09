@@ -4,8 +4,8 @@ from mesa.visualization.modules import CanvasGrid, ChartModule
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
 
-from model import Classroom
-from agents import Exit, Wall, Furniture, Human
+from discrete.model import Classroom
+from discrete.agents import Exit, Wall, Furniture, Human
 
 
 # Creates a visual portrayal of our model in the browser interface
@@ -51,7 +51,7 @@ status_chart = ChartModule([{"Label": "Escaped", "Color": "green"}])
 
 # Get list of available floorplans
 
-floor_plans = [f for f in listdir("../floorplans")]
+floor_plans = [f for f in listdir("floorplans")]
 
 # Specify the parameters changeable by the user, in the web interface
 model_params = {

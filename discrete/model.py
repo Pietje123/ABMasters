@@ -1,12 +1,11 @@
 from mesa import Model
-from trial_grid import *
+from discrete.trial_grid import *
 from mesa.time import SimultaneousActivation
 import os
 import numpy as np
-from agents import *
+from discrete.agents import *
 from mesa.datacollection import DataCollector
-from scheduler import DistanceScheduler
-# import matplotlib.pyplot as plt
+from discrete.scheduler import DistanceScheduler
 
 class Classroom(Model):
 	def __init__(self, human_count, human_weight=3, human_panic=0.0, human_speed=3, floorplan='0'):
@@ -16,12 +15,11 @@ class Classroom(Model):
 		self.schedules = ['Human']
 		self.schedule_Human = DistanceScheduler(self)
 		self.schedule = self.schedule_Human
-		# SimultaneousActivation(self)
 		self.exits = []
 		self.floorplan = []
 		self.spawn_list = []
 
-		with open('../floorplans/' + floorplan) as f:
+		with open('floorplans/' + floorplan) as f:
 			[self.floorplan.append(line.strip().split()) for line in f.readlines()]
 
 		size = len(self.floorplan) , len(self.floorplan[0])
@@ -47,7 +45,6 @@ class Classroom(Model):
 
 		# Spawn n_agents according to floorplan
 		for pos in random.sample(self.spawn_list, self.n_agents):
-		# for pos in self.spawn_list:
 			self.new_agent(Human, pos, human_weight, human_panic, human_speed)
 
 
@@ -58,10 +55,6 @@ class Classroom(Model):
 				"Escaped": lambda m: (self.n_agents - self.schedule_Human.get_agent_count())
 			}
 		)
-
-		# for human in self.agents:
-		# 	if type(human) is Human:
-		# 		human.dijkstra()
 
 	def new_agent(self, agent_type, pos, weight, human_panic= 0.0, human_speed = 3):
 		'''
@@ -93,28 +86,7 @@ class Classroom(Model):
 			self.running = False
 
 		self.schedule_Human.step()
-		#print(len(self.agents))
 
 	def run_model(self):
 		while self.agents:
 			self.step()
-
-# if not os.path.exists('Data/'):
-# 	os.mkdir('Data')
-
-# for i in range(10):
-# 	for humans in range(10, 81, 10):
-# 		for human_weight in range(1,11):
-# 			for panic in np.arange(0.1, 0.7, 0.1):
-# 				number = 0
-# 				while True:
-# 					filename = 'Data/N_' + str(humans) + '_weight_' + str(human_weight) + '_panic_' + str(panic) \
-# 								+ '_' + str(number) + '.pkl'
-# 					if os.path.exists(filename):
-# 						number+=1
-# 					else:
-# 						break 
-# 				model = Classroom('floorplan_c0_110.txt', humans, human_weight, panic)
-# 				model.run_model()
-# 				data = model.datacollector.get_model_vars_dataframe()
-# 				data.to_pickle(filename)
