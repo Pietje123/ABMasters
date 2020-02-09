@@ -1,10 +1,15 @@
 import numpy as np
 
 def dijkstraforce(pos, targ):
+    """
+    Calculates self-driving force from current position towards the first
+    node in the agent's shortest path.
+    """
     xs, ys = pos
     xe, ye = targ
-    dx, dy = (xe / 3 - xs), (ye / 3 - ys)
-    print(f"DF: {pos}, {targ}, {dx, dy}")
+    dx, dy = (xe / 6 - xs), (ye / 6 - ys)
+
+    # Calculate force angle theta
     if np.abs(dx) < 0.00001 or np.abs(dy) < 0.00001:
         if dx > 0.00001:
             theta = 0
@@ -26,11 +31,15 @@ def dijkstraforce(pos, targ):
         elif dx < 0 and dy < 0:
             theta = np.pi + np.arctan(np.abs(dy / dx))
 
-    fx, fy = 0.15 * np.cos(theta), 0.15 * np.sin(theta)
-    print(f"Dijkstra fx: {fx}, fy: {fy}, theta: {theta}")
+    fx, fy = 0.10 * np.cos(theta), 0.10 * np.sin(theta)
     return fx, fy
 
+
 def bodyforce(pos, humans):
+    """
+    Calculates human-human interaction for all other humans within range of
+    the agent.
+    """
     fx, fy = 0, 0
     xs, ys = pos
     dist = 0
@@ -42,7 +51,8 @@ def bodyforce(pos, humans):
                 dx, dy = (xe - xs), (ye - ys)
                 dist = np.sqrt((dx)**2 + (dy)**2)
 
-                if dist < 0.5:
+                if dist < 1.0:
+                    # Calculate force angle theta
                     if np.abs(dx) < 0.00001 or np.abs(dy) < 0.00001:
                         if dx > 0.001:
                             theta = 0
@@ -62,27 +72,18 @@ def bodyforce(pos, humans):
                         elif dx < 0 and dy < 0:
                             theta = np.pi + np.arctan(dy / dx)
 
-                    fx += -0.07 / dist * np.cos(theta)
-                    fy += -0.07 / dist * np.sin(theta)
-        except TypeError:
-            pass
+                    fx -= 0.04 / np.power(dist, 1.8) * np.cos(theta)
+                    fy -= 0.04 / np.power(dist, 1.8) * np.sin(theta)
+        except Exception as e:
+            print(e)
 
     return (fx, fy)
 
-def objectforce(pos, obstacles):
-    fx, fy = 0, 0
-
-    for obstacle in obstacles:
-        xs, ys = pos
-        xe, ye = obstacle.pos
-        dx, dy = (xe - xs), (ye - ys)
-        dist = np.sqrt((dx)**2 + (dy)**2)
-
-    pass
-
-
 def totalforce(pos, target, humans):
-
+    """
+    Calculates and returns new position of agent based on caluclated forces
+    and current position.
+    """
     dijkstra_x, dijkstra_y = dijkstraforce(pos, target)
     body_x, body_y = bodyforce(pos, humans)
     total_x, total_y = dijkstra_x + body_x, dijkstra_y + body_y

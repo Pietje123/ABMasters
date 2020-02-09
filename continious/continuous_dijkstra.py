@@ -2,13 +2,16 @@ import numpy as np
 import copy
 
 def dijkstra(maingrid, pos):
-
-    grid = copy.deepcopy(maingrid)
+    """
+    Applies Dijkstra's algorithm on the input grid.
+    """
+    grid = copy.copy(maingrid)
     xmax, ymax = len(grid[0]), len(grid)
     xs, ys = pos[0], pos[1]
     grid[ys][xs].done = True
     stack = [grid[ys][xs]]
 
+    # Continue search untill loop is broken by finding the exit
     while True:
         heap = stack
         stack = []
@@ -17,6 +20,7 @@ def dijkstra(maingrid, pos):
                 node.path.append(node.pos)
                 return node.path[1:]
 
+            # Shorthand for coordinates
             a = node.pos[0] + 1
             b = node.pos[0] - 1
             c = node.pos[0]
@@ -24,6 +28,7 @@ def dijkstra(maingrid, pos):
             e = node.pos[1] - 1
             f = node.pos[1]
 
+            # Check 4 closest nodes (Von Neumann neighborhood)
             if a > -1 and a < xmax:
                 if not grid[f][a].done:
                     grid[f][a].done = True
